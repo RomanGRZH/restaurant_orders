@@ -1,0 +1,105 @@
+************************
+-- Table USER
+-- Information: status 0 means the User didn't activate his account yet
+
+id |first_name|last_name|mail                |phone      |address          |zip |city     |status|
+---|----------|---------|--------------------|-----------|-----------------|----|---------|------|
+100|John      |Anton    |j@ana.tole          |+41 536 436|Heinrichstrasse  |8005|Zürich   |1     |
+101|Marie     |Medicis  |marie@medi.cis      |           |Sihlquai         |8005|Zürich   |1     |
+180|Anna      |Veritas  |anna@veritas.com    |           |                 |    |         |1     |
+201|Franz     |Ouali    |franz@ouali.fr      |           |Schützengasse    |8001|Zürich   |1     |
+213|Sarah     |Magni    |s.magni@gmail.com   |+41 325 678|Haimstrasse      |8001|Zürich   |1     |
+215|Alan      |Dupuis   |a.dupuis@gmail.com  |+41 325 413|Regensbergstrasse|8050|Zürich   |1     |
+221|Cedric    |Bouteille|bouteille@hotmail.ch|           |Püntackerweg     |8152|Opfikon  |1     |
+225|Gill      |Baccide  |gill@baccide.com    |+41 432 987|Neugutstrasse    |8600|Dübendorf|1     |
+301|Joe       |Qi       |fake@mail.com       |           |                 |    |         |0     |
+
+************************
+-- Table RESTAURANT
+
+id|name           |phone      |address         |zip |city  |
+--|---------------|-----------|----------------|----|------|
+11|Libanese flavor|           |Kanzleistrasse  |8004|Zürich|
+23|Tanaka Sushi   |+41 786 432|Talacker        |8001|Zürich|
+38|Le Bistrot     |+33 789 542|Tödistrasse     |8002|Zürich|
+42|Mama Cucina    |           |Bramenring      |8302|Kloten|
+51|Sawatdee       |           |Kreuzbühlstrasse|8008|Zürich|
+
+************************
+-- Table DISH
+
+id|title                 |description                             |price|restaurant|
+--|----------------------|----------------------------------------|-----|----------|
+15|Chicken Shawarma      |Chicken in a grilled galette            | 20.5|        11|
+18|Gyoza                 |Japanese ravioli                        | 15.0|        23|
+19|Taboulé               |Parsley taboulé                         | 21.2|        11|
+22|Salmon sushi          |per piece                               |  2.0|        23|
+24|Cucumber maki         |6 pieces                                |  4.5|        23|
+25|Tuna maki             |6 pieces                                |  9.4|        23|
+27|California maki       |8 pieces                                | 12.0|        23|
+31|Ramen                 |Japanese soup with pork and noodles     | 21.0|        23|
+32|Kebbe boulette        |Delicious meat balls                    | 10.7|        11|
+34|Tartiflette           |Potatoes, reblochon cheese and cream    | 21.0|        38|
+35|Blanquette            |Veal meat and cream                     | 25.5|        38|
+37|Croque-Monsieur       |Grilled bread with ham and cheese       | 12.0|        38|
+40|Quattro formaggi pizza|Pizza with 4 type of cheese             | 18.0|        42|
+41|Il Maestro            |Pizza with surpise                      | 21.5|        42|
+43|Rustica pizza         |Pizza with bacon and onions             | 17.8|        42|
+44|Pasta Carbonara       |                                        | 16.8|        42|
+48|Pad Thai              |Noodles with vegetables and oyster sauce| 25.0|        51|
+51|Laab                  |Spicy salad                             | 17.0|        51|
+52|Pad See Eiw           |Large noodles with vegetables           | 25.5|        51|
+
+************************
+-- Table ORDER
+
+id |date               |status|promotion|user|restaurant|
+---|-------------------|------|---------|----|----------|
+ 10|2020-12-01 20:03:45|     1|         | 100|        11|
+ 11|2020-12-01 20:04:01|     1|         | 101|        42|
+ 12|2020-12-01 20:04:01|     1|     10.0| 180|        51|
+ 13|2020-12-01 20:04:02|     1|         | 201|        38|
+ 14|2020-12-01 20:06:02|     1|      5.0| 221|        51|
+ 15|2020-12-01 20:06:02|     1|      5.0| 221|        23|
+ 16|2020-12-01 20:10:04|     1|         | 215|        42|
+431|2021-01-10 20:01:05|     1|     15.0| 101|        11|
+432|2021-01-10 20:01:05|     0|         | 213|        23|
+433|2021-01-10 20:01:05|     1|         | 201|        42|
+434|2021-01-10 20:01:08|     0|     15.0| 101|        38|
+435|2021-01-10 20:01:08|     0|         | 221|        23|
+436|2021-01-10 20:01:08|     1|         | 221|        51|
+
+************************
+-- Table ORDER_DETAIL
+
+id|order|dish|quantity|
+--|-----|----|--------|
+ 1|   10|  15|       2|
+ 2|   10|  32|       4|
+ 3|   10|  19|       2|
+ 4|   11|  40|       1|
+ 5|   11|  41|       1|
+ 6|   12|  52|       1|
+ 7|   12|  51|       1|
+ 8|   13|  34|       8|
+ 9|   14|  48|       3|
+10|   15|  22|       6|
+11|   15|  31|       1|
+12|   15|  25|       2|
+13|   16|  44|       1|
+14|   16|  43|       2|
+15|  431|  15|       3|
+16|  431|  32|       3|
+17|  432|  27|       2|
+18|  432|  25|       2|
+19|  432|  24|       2|
+20|  432|  22|       2|
+21|  433|  44|       1|
+22|  433|  40|       1|
+23|  434|  37|       2|
+24|  434|  35|       1|
+25|  435|  27|       4|
+26|  435|  22|       2|
+27|  435|  31|       1|
+28|  436|  51|       1|
+29|  435|  52|       2|
