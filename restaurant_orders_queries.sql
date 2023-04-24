@@ -1,10 +1,10 @@
 --PRAGMA foreign_keys=ON;
---
- DROP TABLE 'User';
- DROP TABLE "Order"; 
- DROP TABLE Restaurant; 
- DROP TABLE Dish; 
- DROP TABLE Order_detail; 
+-- drop tables in case they already exist
+DROP TABLE 'User';
+DROP TABLE "Order"; 
+DROP TABLE Restaurant; 
+DROP TABLE Dish; 
+DROP TABLE Order_detail; 
 
 CREATE TABLE 'User'(
 id integer NOT NULL PRIMARY KEY, first_name TEXT, last_name TEXT, 
@@ -39,24 +39,24 @@ FOREIGN KEY (dish) REFERENCES Dish(id))
 
 INSERT INTO 'User' (id, first_name, last_name, mail, phone, address, zip, city, status)
 VALUES
-(100,'John'      ,'Anton'    ,'j@ana.tole'          ,'+41 536 436','Heinrichstrasse ' ,8005,'Zürich'   ,'1'     ),
-(101,'Marie'     ,'Medicis'  ,'marie@medi.cis'      ,NULL,'Sihlquai'         ,8005,'Zürich'   ,'1'     ),
+(100,'John'      ,'Anton'    ,'j@ana.tole'          ,'+41 536 436','Heinrichstrasse ' ,8005,'Zï¿½rich'   ,'1'     ),
+(101,'Marie'     ,'Medicis'  ,'marie@medi.cis'      ,NULL,'Sihlquai'         ,8005,'Zï¿½rich'   ,'1'     ),
 (180,'Anna'      ,'Veritas'  ,'anna@veritas.com'    , NULL, NULL      ,   NULL ,    NULL     ,'1'     ),
-(201,'Franz'     ,'Ouali'    ,'franz@ouali.fr'      , NULL,'Schützengasse'    ,8001,'Zürich'   ,'1'     ),
-(213,'Sarah'     ,'Magni'    ,'s.magni@gmail.com'   ,'+41 325 678','Haimstrasse'      ,8001,'Zürich'   ,'1'     ),
-(215,'Alan'      ,'Dupuis'   ,'a.dupuis@gmail.com'  ,'+41 325 413','Regensbergstrasse',8050,'Zürich'   ,'1'     ),
-(221,'Cedric'    ,'Bouteille','bouteille@hotmail.ch', NULL,'Püntackerweg'     ,8152,'Opfikon'  ,'1'     ),
-(225,'Gill'      ,'Baccide'  ,'gill@baccide.com'    ,'+41 432 987','Neugutstrasse'    ,8600,'Dübendorf','1'     ),
+(201,'Franz'     ,'Ouali'    ,'franz@ouali.fr'      , NULL,'Schï¿½tzengasse'    ,8001,'Zï¿½rich'   ,'1'     ),
+(213,'Sarah'     ,'Magni'    ,'s.magni@gmail.com'   ,'+41 325 678','Haimstrasse'      ,8001,'Zï¿½rich'   ,'1'     ),
+(215,'Alan'      ,'Dupuis'   ,'a.dupuis@gmail.com'  ,'+41 325 413','Regensbergstrasse',8050,'Zï¿½rich'   ,'1'     ),
+(221,'Cedric'    ,'Bouteille','bouteille@hotmail.ch', NULL,'Pï¿½ntackerweg'     ,8152,'Opfikon'  ,'1'     ),
+(225,'Gill'      ,'Baccide'  ,'gill@baccide.com'    ,'+41 432 987','Neugutstrasse'    ,8600,'Dï¿½bendorf','1'     ),
 (301,'Joe'       ,'Qi'       ,'fake@mail.com'       , NULL, NULL      ,NULL,      NULL   ,'0'     )
 ;
 
 INSERT INTO restaurant (id, name, phone, address, zip, city)
 VALUES
-(11 ,'Libanese flavor' ,NULL ,'Kanzleistrasse'   ,8004 ,'Zürich' ),
-(23 ,'Tanaka Sushi'    ,'+41 786 432' ,'Talacker'         ,8001 ,'Zürich' ),
-(38 ,'Le Bistrot'      ,'+33 789 542' ,'Tödistrasse'      ,8002 ,'Zürich' ),
+(11 ,'Libanese flavor' ,NULL ,'Kanzleistrasse'   ,8004 ,'Zï¿½rich' ),
+(23 ,'Tanaka Sushi'    ,'+41 786 432' ,'Talacker'         ,8001 ,'Zï¿½rich' ),
+(38 ,'Le Bistrot'      ,'+33 789 542' ,'Tï¿½distrasse'      ,8002 ,'Zï¿½rich' ),
 (42 ,'Mama Cucina'     ,NULL ,'Bramenring'       ,8302 ,'Kloten' ),
-(51 ,'Sawatdee'        ,NULL ,'Kreuzbühlstrasse' ,8008 ,'Zürich' )
+(51 ,'Sawatdee'        ,NULL ,'Kreuzbï¿½hlstrasse' ,8008 ,'Zï¿½rich' )
 ; 
 
 INSERT INTO 'Order' (id, date, status, promotion, user, restaurant)
@@ -82,7 +82,7 @@ INSERT INTO dish(id, title, descripition, price, restaurant)
 VALUES
 (15,'Chicken Shawarma'      ,'Chicken in a grilled galette'            , 20.5,        11),
 (18,'Gyoza'                 ,'Japanese ravioli'                        , 15.0,        23),
-(19,'Taboulé'               ,'Parsley taboulé'                         , 21.2,        11),
+(19,'Taboulï¿½'               ,'Parsley taboulï¿½'                         , 21.2,        11),
 (22,'Salmon sushi'          ,'per piece'                               ,  2.0,        23),
 (24,'Cucumber maki'         ,'6 pieces'                                ,  4.5,        23),
 (25,'Tuna maki'             ,'6 pieces'                                ,  9.4,        23),
@@ -153,6 +153,14 @@ WHERE order_year = 2020
 AND order_month = 12
 ;
 
+-- 2.1b) which restaurants delivered an order with status 1 in january?
+
+SELECT 'order'.id AS order_id, status, date, Restaurant.name AS restaurant_name, 
+cast(STRFTIME ('%m', date) as Int) AS order_month 
+FROM "Order"
+LEFT JOIN Restaurant
+ON "Order".restaurant = Restaurant.id
+WHERE status = 1 AND order_month = 1;
 
 -- 2.2. Which restaurants offer noodles ?
 
@@ -167,7 +175,17 @@ WHERE instr(menu_description, 'noodles') > 0
 OR instr(menu_name, 'noodles') > 0
 ;
 
--- 2.3. Which dishes were ordered by “Cedric Bouteille” in 2020 ?
+-- 2.2b) Alternative solution
+
+SELECT name AS restaurant_name, title as menu_name, description as menu_description 
+FROM Dish
+LEFT JOIN Restaurant
+ON Dish.restaurant = Restaurant.id
+WHERE menu_description LIKE '%noodles%'
+OR menu_name LIKE '%noodles%'
+;
+
+-- 2.3. Which dishes were ordered by ï¿½Cedric Bouteilleï¿½ in 2020 ?
 
 WITH or_det AS( 
 SELECT *
@@ -483,8 +501,8 @@ FROM turnover_table
 ORDER BY turnover_per_order DESC 
 ;
 
---2.15. Display all of the order with the mention “Profitable” 
---if the total of the order is above 35 , “Balanced” if between 34 and 35, or “Not profitable”.
+--2.15. Display all of the order with the mention ï¿½Profitableï¿½ 
+--if the total of the order is above 35 , ï¿½Balancedï¿½ if between 34 and 35, or ï¿½Not profitableï¿½.
 
 SELECT *, 
 CASE 
